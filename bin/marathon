@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'marathon'
+
+options = Marathon::Parser.parse ARGV
+
+Marathon::Run.new(options.commands).run
+

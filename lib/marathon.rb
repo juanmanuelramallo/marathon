@@ -1,6 +1,7 @@
-require "marathon/version"
-
 module Marathon
   class Error < StandardError; end
-  # Your code goes here...
+
+  require 'marathon/version'
+  require 'marathon/parser'
+  require 'marathon/run'
 end

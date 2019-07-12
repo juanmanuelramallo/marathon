@@ -3,7 +3,7 @@ RSpec.describe Marathon do
     expect(Marathon::VERSION).not_to be nil
   end
 
-  it "does something useful" do
+  it "receives" do
     expect(false).to eq(true)
   end
 end
