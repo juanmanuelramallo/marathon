@@ -28,8 +28,14 @@ Gem::Specification.new do |spec|
   end
 
   # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files         = ["lib/marathon.rb", "lib/marathon/parser.rb", "lib/marathon/run.rb", "lib/marathon/version.rb"]
+  spec.files         = [
+    "lib/marathon.rb",
+    "lib/marathon/command.rb",
+    "lib/marathon/interface.rb",
+    "lib/marathon/parser.rb",
+    "lib/marathon/run.rb",
+    "lib/marathon/version.rb"
+  ]
   spec.bindir        = "bin"
   spec.executables   = ["marathon"]
   spec.require_paths = ["lib"]
@@ -37,5 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.0.2"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.8"
+  spec.add_development_dependency "pry", "~> 0.12.2"
   spec.add_runtime_dependency('colorize')
 end

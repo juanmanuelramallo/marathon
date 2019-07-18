@@ -2,6 +2,10 @@
 require 'marathon'
 
 options = Marathon::Parser.parse ARGV
+interface = Marathon::Interface.new(options.commands.size)
+commands = options.commands.map.with_index do |command, index|
+  Marathon::Command.new(command, interface, index)
+end
 
-Marathon::Run.new(options.commands).run
+Marathon::Run.new(commands, interface).run
 
