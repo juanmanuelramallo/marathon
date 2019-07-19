@@ -1,5 +1,9 @@
 RSpec.describe Marathon::Command do
-  let(:command) { described_class.new(command_text, interface, options) }
+  let(:command) do
+    described_class.new(
+      command: command_text, run_level: run_level, interface: interface, options: options
+    )
+  end
   let(:command_text) { 'echo hola' }
   let(:interface) { Marathon::Interface.new(1) }
   let(:options) do
@@ -7,6 +11,7 @@ RSpec.describe Marathon::Command do
       silent: true
     }
   end
+  let(:run_level) { nil }
 
   describe '#execute' do
     subject do
@@ -42,12 +47,33 @@ RSpec.describe Marathon::Command do
     end
   end
 
-  describe '#join' do
-    subject { command.join }
+  # describe '#join' do
+  #   subject { command.join }
 
-    it 'sends join to the thread object' do
-      allow(command.thread).to receive(:join).and_return(true)
-      expect(subject).to eq true
+  #   it 'sends join to the thread object' do
+  #     allow(command.thread).to receive(:join).and_return(true)
+  #     expect(subject).to eq true
+  #   end
+  # end
+
+  describe '#success?' do
+    before do
+      command.execute
+      command.join
+    end
+
+    subject { command.success? }
+
+    context 'successfull command' do
+      let(:command_text) { 'test 1 = 1' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'failed command' do
+      let(:command_text) { 'test 1 = 2' }
+
+      it { is_expected.to eq false }
     end
   end
 

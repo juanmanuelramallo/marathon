@@ -1,11 +1,8 @@
 #!/usr/bin/env ruby
 require 'marathon'
 
-options = Marathon::Parser.parse ARGV
-interface = Marathon::Interface.new(options.commands.size)
-commands = options.commands.map.with_index do |command, index|
-  Marathon::Command.new(command, interface, index)
-end
+parser = Marathon::Parser.new
+options = parser.parse ARGV
 
-Marathon::Run.new(commands, interface).run
+Marathon::Run.new(options.commands, parser.interface).run
 

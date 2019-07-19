@@ -1,18 +1,16 @@
 module Marathon
   class Interface
-    attr_reader :commands_count, :messages
+    attr_reader :commands_size, :messages
 
-    def initialize(commands_count)
-      @commands_count = commands_count
+    def initialize(commands_size)
+      @commands_size = commands_size
     end
 
     def empty_spaces(size)
       ' ' * size
     end
 
-    def render_header
-      str = "MARATHON: Running #{commands_count} commands"
-      padding = 5
+    def render_banner(str, padding = 3)
       puts "#{empty_spaces(str.size + padding * 2)}".on_black
       puts "#{string_with_padding(str, padding)}".white.on_black
       puts "#{empty_spaces(str.size + padding * 2)}".on_black
@@ -22,11 +20,23 @@ module Marathon
       puts (" " * 100 + "\n").light_blue.underline
     end
 
+    def render_run_level_execution_header(run_level)
+      render_simple_banner("Executing step #{run_level}")
+    end
+
+    def render_run_level_result_header(run_level)
+      render_banner("Step #{run_level}")
+    end
+
+    def render_simple_banner(str)
+      puts string_with_padding(str).white.on_black
+    end
+
     def render_spacer
       puts "\n"
     end
 
-    def string_with_padding(str, padding = 0)
+    def string_with_padding(str, padding = 3)
       "#{empty_spaces(padding)}#{str}#{empty_spaces(padding)}"
     end
   end
