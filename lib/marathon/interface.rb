@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Marathon
+  # Interface object to render text and common strings into the standard output
   class Interface
     attr_reader :commands_size, :messages
 
@@ -11,13 +14,15 @@ module Marathon
     end
 
     def render_banner(str, padding = 3)
-      puts "#{empty_spaces(str.size + padding * 2)}".on_black
-      puts "#{string_with_padding(str, padding)}".white.on_black
-      puts "#{empty_spaces(str.size + padding * 2)}".on_black
+      empty = empty_spaces(str.size + padding * 2).on_black
+
+      puts empty
+      puts string_with_padding(str, padding).white.on_black
+      puts empty
     end
 
     def render_divider
-      puts (" " * 100 + "\n").light_blue.underline
+      puts ' ' * 100 + "\n".light_blue.underline
     end
 
     def render_run_level_execution_header(run_level)

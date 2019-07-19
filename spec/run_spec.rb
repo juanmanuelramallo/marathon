@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Marathon::Run do
   let(:interface) { Marathon::Interface.new(1) }
   let(:commands) { [Marathon::Command.new('echo hola', interface)] }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Marathon::Command do
   let(:command) do
     described_class.new(
