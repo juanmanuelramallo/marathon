@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'English'
+
 module Marathon
   # A command object which receives the command text, a run level number, an interface object and
   # an options hash
@@ -11,7 +13,7 @@ module Marathon
 
     FIRST_STEP = 1
 
-    def initialize(command:, run_level:, interface:, options: {})
+    def initialize(command:, run_level: FIRST_STEP, interface:, options: {})
       @command = command
       @interface = interface
       @options = options
@@ -20,8 +22,6 @@ module Marathon
     end
 
     def execute
-      return thread if thread
-
       @thread = Thread.new do
         @output = `#{command}`
         @success = $CHILD_STATUS.success?

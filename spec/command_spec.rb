@@ -34,7 +34,7 @@ RSpec.describe Marathon::Command do
 
     context 'standard output' do
       it 'does not print any message to stdout' do
-        expect { subject }.to_not output("✓ 'echo hola' DONE\n").to_stdout
+        expect { subject }.to_not output("> Done 'echo hola'\n").to_stdout
       end
 
       context 'without silent option' do
@@ -43,7 +43,7 @@ RSpec.describe Marathon::Command do
         end
 
         it 'prints the message of command has completed' do
-          expect { subject }.to output("✓ 'echo hola' DONE\n").to_stdout
+          expect { subject }.to output("> Done 'echo hola'\n").to_stdout
         end
       end
     end
