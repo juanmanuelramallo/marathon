@@ -3,7 +3,8 @@
 
 require 'marathon'
 
-parser = Marathon::Parser.new
+interface = Marathon::Interface.new
+parser = Marathon::Parser.new(interface)
 options = parser.parse ARGV
 
-Marathon::Run.new(options.commands, parser.interface).run
+Marathon::Run.new(options.commands, interface).run

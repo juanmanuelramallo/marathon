@@ -7,7 +7,7 @@ RSpec.describe Marathon::Command do
     )
   end
   let(:command_text) { 'echo hola' }
-  let(:interface) { Marathon::Interface.new(1) }
+  let(:interface) { Marathon::Interface.new }
   let(:options) do
     {
       silent: true

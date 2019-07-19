@@ -8,4 +8,5 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gemspec
 
 gem 'colorize'
-gem 'rubocop'
+gem 'yard', '~> 0.9.20'
+gem 'rubocop', '~> 0.73'

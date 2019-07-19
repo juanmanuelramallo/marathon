@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
-# Main object to run a marathon of commands
+#
+# Running several commands with a pretty output result and different levels
+# to allow execution if previous levels have been successful
+#
+# See {#Marathon::Run}
+#
 module Marathon
-  class Error < StandardError; end
-
   require 'marathon/command'
   require 'marathon/interface'
   require 'marathon/parser'

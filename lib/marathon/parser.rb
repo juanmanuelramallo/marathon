@@ -2,22 +2,46 @@
 
 require 'optparse'
 
-Options = Struct.new(:commands)
-
-# marathon -c 'bundle exec rubocop','yarn run js-lint','bundle exec rspec;;2'
-
 module Marathon
+  #
   # Parser object to parse the options passed from bash
+  #
   # It will instantiate the command objects and make them available in the Options structure
+  #
+  # Examples:
+  # - `marathon -c 'bundle exec rubocop','yarn run js-lint','bundle exec rspec;;2'`
+  #   - It will parse the first two commands to be in the first step and rspec in the second step
+  # - `marathon -c 'brakeman;;1','npx cypress run;;2'`
+  #   - It will parse brakeman to be in the first step and cypress in the second step
+  #
   class Parser
-    def parse(options)
+    # Basic structure to store parsed commands
+    Options = Struct.new(:commands)
+
+    # Parsed arguments object
+    attr_accessor :args
+    # An instance of the interface object
+    attr_reader :interface
+
+    #
+    # A new instance of the Parser
+    #
+    # @param interface [Marathon::Interface] An instance of the interface object
+    #
+    def initialize(interface)
       @args = Options.new
-      opt_parser.parse!(options)
-      @args
+      @interface = interface
     end
 
-    def interface
-      @interface ||= Marathon::Interface.new(@commands_size)
+    #
+    # Parses the options from the bash command
+    #
+    # @param options [Array] ARGV array to parse
+    # @return [Options] An instance of the options structure
+    #
+    def parse(options)
+      opt_parser.parse!(options)
+      args
     end
 
     private
@@ -26,9 +50,7 @@ module Marathon
       opts.on(
         "-c 'Command  A;;Level','Command B;;Level','...'", Array, 'List of commands to run'
       ) do |n|
-        @commands_size = n.size
-
-        @args.commands = n.map do |arg|
+        args.commands = n.map do |arg|
           command_text, level = arg.split(';;')
           Marathon::Command.new(command: command_text, run_level: level, interface: interface)
         end
