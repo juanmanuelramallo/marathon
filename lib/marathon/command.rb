@@ -55,7 +55,7 @@ module Marathon
     #
     def execute
       @thread = Thread.new do
-        @output = `#{command}`
+        @output = `#{command} 2>&1`
         @success = $CHILD_STATUS.success?
         puts "> Done '#{command}'" unless options[:silent]
       end

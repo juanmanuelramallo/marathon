@@ -25,10 +25,12 @@ To set rspec to run after all linters and static analizers:
 marathon -c 'bundle exec rspec;;2','yarn test','bundle exec rubocop','bundle exec brakeman','yarn run js-lint','yarn run css-lint'
 ```
 
-To set rspec to run after two steps:
+To set rspec to run after rubocop and after frontend linters:
 ```bash
-marathon -c 'bundle exec rubocop','yarn test','bundle exec brakeman;;2','bundle exec rspec;;3'
+marathon -c 'yarn run js-lint','yarn run css-lint','bundle exec rubocop;;2','bundle exec rspec;;3'
 ```
+
+![failed example image](https://i.imgur.com/zCIQCGI.png)
 
 ## Development
 
