@@ -1,5 +1,7 @@
 # Marathon
 
+[![CircleCI](https://circleci.com/gh/juanmanuelramallo/marathon.svg?style=shield)](https://circleci.com/gh/juanmanuelramallo/marathon)
+
 Marathon allows you to run several bash commands and congiure them by run levels, so if any previous level has failed the execution gets stoped after the current level ends.
 
 ## Installation
