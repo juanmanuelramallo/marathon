@@ -9,4 +9,5 @@ gemspec
 
 gem 'colorize'
 gem 'rubocop', '~> 0.73'
+gem 'simplecov', '~> 0.17.0', require: false
 gem 'yard', '~> 0.9.20'

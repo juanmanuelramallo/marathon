@@ -5,6 +5,8 @@
 version: 2
 jobs:
   build:
+    environment:
+      CC_TEST_REPORTER_ID: bc434defbab2b7356c824029d24ed9c69db7a636465fa25f4fbd1acac6ee23e6
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.6.3
@@ -48,5 +50,17 @@ jobs:
           command: bundle exec rubocop
 
       - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+
+      - run:
           name: Tests
-          command: bundle exec rspec
+          command: |
+            bundle exec rspec
+            ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
+
+      - store_artifacts:
+          path: coverage
