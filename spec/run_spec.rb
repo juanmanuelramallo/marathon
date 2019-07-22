@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Marathon::Run do
+  let(:commands) { [Marathon::Command.new(command: 'echo hola')] }
   let(:interface) { Marathon::Interface.new }
-  let(:commands) { [Marathon::Command.new(command: 'echo hola', interface: interface)] }
   let(:run) { Marathon::Run.new(commands, interface) }
 
   describe '#run' do
@@ -15,9 +15,9 @@ RSpec.describe Marathon::Run do
     context 'with a failed step' do
       let(:commands) do
         [
-          Marathon::Command.new(command: 'test 1 = 1', interface: interface),
-          Marathon::Command.new(command: 'test 1 = 2', interface: interface, step: 2),
-          Marathon::Command.new(command: 'test 2 = 2', interface: interface, step: 3)
+          Marathon::Command.new(command: 'test 1 = 1'),
+          Marathon::Command.new(command: 'test 1 = 2', step: 2),
+          Marathon::Command.new(command: 'test 2 = 2', step: 3)
         ]
       end
 

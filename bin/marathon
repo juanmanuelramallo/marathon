@@ -4,7 +4,7 @@
 require 'marathon'
 
 interface = Marathon::Interface.new
-parser = Marathon::Parser.new(interface)
+parser = Marathon::Parser.new
 options = parser.parse ARGV
 
 Marathon::Run.new(options.commands, interface).run
