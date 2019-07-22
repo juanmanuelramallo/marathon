@@ -3,11 +3,10 @@
 RSpec.describe Marathon::Command do
   let(:command) do
     described_class.new(
-      command: command_text, step: step, interface: interface, options: options
+      command: command_text, step: step, options: options
     )
   end
   let(:command_text) { 'echo hola' }
-  let(:interface) { Marathon::Interface.new }
   let(:options) do
     {
       silent: true

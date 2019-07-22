@@ -20,17 +20,12 @@ module Marathon
 
     # Parsed arguments object
     attr_accessor :args
-    # An instance of the interface object
-    attr_reader :interface
 
     #
     # A new instance of the Parser
     #
-    # @param interface [Marathon::Interface] An instance of the interface object
-    #
-    def initialize(interface)
+    def initialize
       @args = Options.new
-      @interface = interface
     end
 
     #
@@ -52,7 +47,7 @@ module Marathon
       ) do |n|
         args.commands = n.map do |arg|
           command_text, step = arg.split(';;')
-          Marathon::Command.new(command: command_text, step: step, interface: interface)
+          Marathon::Command.new(command: command_text, step: step)
         end
       end
     end

@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Marathon::Parser do
-  let(:interface) { Marathon::Interface.new }
-
   describe '#parse' do
-    subject { described_class.new(interface).parse(options) }
+    subject { described_class.new.parse(options) }
 
     context 'with valid arguments' do
       let(:options) { ['-c', 'test 1 = 1'] }

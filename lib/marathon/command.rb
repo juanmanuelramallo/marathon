@@ -4,8 +4,7 @@ require 'English'
 
 module Marathon
   #
-  # A command object which receives the command text, a step (number), an interface object and
-  # an options hash.
+  # A command object which receives the command text, a step (number)
   #
   # It can execute commands and store its output to be able to render the result later.
   #
@@ -19,8 +18,6 @@ module Marathon
 
     # Command text to run in bash
     attr_reader :command
-    # An instance of the interface object
-    attr_reader :interface
     # Hash of options
     attr_reader :options
     # Level or step where this command will be run
@@ -34,14 +31,12 @@ module Marathon
     #
     # @param command [String] Command text to run in bash
     # @param step [Integer] Level or step where this command will be run
-    # @param interface [Marathon::Interface] An instance of the interface object
     # @param options [Hash] Options available are:
     #   - "silent" (boolean) used to determine wether to print information about
     #     the execution to stdout or not
     #
-    def initialize(command:, step: FIRST_STEP, interface:, options: {})
+    def initialize(command:, step: FIRST_STEP, options: {})
       @command = command
-      @interface = interface
       @options = options
       @step = step ? step.to_i : FIRST_STEP
       @success = nil
