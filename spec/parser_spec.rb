@@ -22,7 +22,7 @@ RSpec.describe Marathon::Parser do
       let(:options) { ['whatever'] }
 
       it 'returns an empty options object' do
-        expect(subject.commands).to eq nil
+        expect(subject.commands).to be_nil
       end
     end
 

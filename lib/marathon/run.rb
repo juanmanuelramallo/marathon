@@ -15,7 +15,7 @@ module Marathon
     #
     # A new instance of run
     #
-    # @param commands [Marathon::Command[]] Array of commands to run
+    # @param commands [Array<Marathon::Command>] Array of commands to run
     # @param interface [Marathon::Interface] An instance of the interface object
     #
     def initialize(commands, interface)

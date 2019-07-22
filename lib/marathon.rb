@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 #
-# Running several commands with a pretty output result and different levels
-# to allow execution if previous levels have been successful
+# Running several commands with a pretty output results and several steps
+# to allow execution of commands grouped by steps and halt execution
+# if the previous step have been unsuccessful
 #
-# See {#Marathon::Run}
+# @see Marathon::Run
 #
 module Marathon
   require 'marathon/command'

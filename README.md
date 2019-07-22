@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c987a96aa491aa1d85bd/maintainability)](https://codeclimate.com/github/juanmanuelramallo/marathon/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c987a96aa491aa1d85bd/test_coverage)](https://codeclimate.com/github/juanmanuelramallo/marathon/test_coverage)
 
-Marathon allows you to run several bash commands and configure them by steps, so if any previous level has failed the execution gets stoped after the current level ends.
+Marathon allows you to run several bash commands and configure them by steps, so if any previous step has failed the execution gets stoped after the current step ends.
 
 ## Installation
 
@@ -26,7 +26,7 @@ Or install it yourself as:
 
 To set rspec to run after all linters and static analizers:
 ```bash
-marathon -c 'bundle exec rspec;;2','yarn test','bundle exec rubocop','bundle exec brakeman','yarn run js-lint','yarn run css-lint'
+marathon -c 'yarn test','bundle exec rubocop','bundle exec brakeman','yarn run js-lint','yarn run css-lint','bundle exec rspec;;2'
 ```
 
 To set rspec to run after rubocop and after frontend linters:
