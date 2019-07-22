@@ -3,7 +3,7 @@
 RSpec.describe Marathon::Command do
   let(:command) do
     described_class.new(
-      command: command_text, run_level: run_level, interface: interface, options: options
+      command: command_text, step: step, interface: interface, options: options
     )
   end
   let(:command_text) { 'echo hola' }
@@ -13,7 +13,7 @@ RSpec.describe Marathon::Command do
       silent: true
     }
   end
-  let(:run_level) { nil }
+  let(:step) { nil }
 
   describe '#execute' do
     subject do

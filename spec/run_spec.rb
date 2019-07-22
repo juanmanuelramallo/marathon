@@ -12,12 +12,12 @@ RSpec.describe Marathon::Run do
       expect { subject }.to change { commands.first.success? }.to true
     end
 
-    context 'with a failed run level' do
+    context 'with a failed step' do
       let(:commands) do
         [
           Marathon::Command.new(command: 'test 1 = 1', interface: interface),
-          Marathon::Command.new(command: 'test 1 = 2', interface: interface, run_level: 2),
-          Marathon::Command.new(command: 'test 2 = 2', interface: interface, run_level: 3)
+          Marathon::Command.new(command: 'test 1 = 2', interface: interface, step: 2),
+          Marathon::Command.new(command: 'test 2 = 2', interface: interface, step: 3)
         ]
       end
 

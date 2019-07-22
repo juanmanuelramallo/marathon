@@ -20,21 +20,21 @@ module Marathon
     end
 
     #
-    # Renders a header banner for the execution of a run level
+    # Renders a header banner for the execution of a step
     #
-    # @param run_level [Integer] Run level to display in the banner
+    # @param step [Integer] Step to display in the banner
     #
-    def render_run_level_execution_header(run_level)
-      render_simple_banner("Executing step #{run_level}")
+    def render_step_execution_header(step)
+      render_simple_banner("Executing step #{step}")
     end
 
     #
-    # Renders a result header banner for the execution of a run level
+    # Renders a result header banner for the execution of a step
     #
-    # @param run_level [Integer] Run level to display in the banner
+    # @param step [Integer] Step to display in the banner
     #
-    def render_run_level_result_header(run_level)
-      render_banner("Step #{run_level}")
+    def render_step_result_header(step)
+      render_banner("Step #{step}")
     end
 
     #
