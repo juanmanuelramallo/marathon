@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c987a96aa491aa1d85bd/maintainability)](https://codeclimate.com/github/juanmanuelramallo/marathon/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c987a96aa491aa1d85bd/test_coverage)](https://codeclimate.com/github/juanmanuelramallo/marathon/test_coverage)
 
-Marathon allows you to run several bash commands and congiure them by run levels, so if any previous level has failed the execution gets stoped after the current level ends.
+Marathon allows you to run several bash commands and configure them by steps, so if any previous level has failed the execution gets stoped after the current level ends.
 
 ## Installation
 

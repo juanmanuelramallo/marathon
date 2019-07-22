@@ -51,8 +51,8 @@ module Marathon
         "-c 'Command  A;;Level','Command B;;Level','...'", Array, 'List of commands to run'
       ) do |n|
         args.commands = n.map do |arg|
-          command_text, level = arg.split(';;')
-          Marathon::Command.new(command: command_text, run_level: level, interface: interface)
+          command_text, step = arg.split(';;')
+          Marathon::Command.new(command: command_text, step: step, interface: interface)
         end
       end
     end
