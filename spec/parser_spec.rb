@@ -14,13 +14,25 @@ RSpec.describe Marathon::Parser do
       it 'returns a command to run' do
         expect(subject.commands.first).to be_kind_of Marathon::Command
       end
+
+      context 'with several steps' do
+        let(:options) { ['-c', 'test 1 = 1,echo HOLA', '-c', 'test 2 = 2'] }
+
+        it 'returns three commands' do
+          expect(subject.commands.size).to eq 3
+        end
+
+        it 'returns two steps' do
+          expect(subject.commands.map(&:step).uniq.sort).to eq [1, 2]
+        end
+      end
     end
 
     context 'with invalid arguments' do
       let(:options) { ['whatever'] }
 
       it 'returns an empty options object' do
-        expect(subject.commands).to be_nil
+        expect(subject.commands).to eq []
       end
     end
 

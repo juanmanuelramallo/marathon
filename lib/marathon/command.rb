@@ -72,7 +72,7 @@ module Marathon
     #
     def render_result
       puts <<~STR
-        $ #{command.white.on_black}
+        #{command.white.on_black}
         #{status_text}
         #{output}
       STR

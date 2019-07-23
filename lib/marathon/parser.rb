@@ -8,11 +8,13 @@ module Marathon
   #
   # It will instantiate the command objects and make them available in the Options structure
   #
-  # Examples:
-  # - `marathon -c 'bundle exec rubocop','yarn run js-lint','bundle exec rspec;;2'`
-  #   - It will parse the first two commands to be in the first step and rspec in the second step
-  # - `marathon -c 'brakeman;;1','npx cypress run;;2'`
-  #   - It will parse brakeman to be in the first step and cypress in the second step
+  # @example
+  #   $ marathon -c 'bundle exec rubocop','yarn run js-lint' -c 'bundle exec rspec'
+  #   # It will parse the first two commands to be in the first step and rspec in the second step
+  # @example
+  #   $ marathon -c 'brakeman' -c 'npx cypress run' -c 'eslint .'
+  #   # It will parse brakeman to be in the first step, cypress in the second step and eslint
+  #     at the third step
   #
   class Parser
     # Basic structure to store parsed commands
@@ -25,7 +27,8 @@ module Marathon
     # A new instance of the Parser
     #
     def initialize
-      @args = Options.new
+      @args = Options.new([])
+      @current_step = Marathon::Command::FIRST_STEP
     end
 
     #
@@ -43,12 +46,14 @@ module Marathon
 
     def commands_opts(opts)
       opts.on(
-        "-c 'Command  A;;Level','Command B;;Level','...'", Array, 'List of commands to run'
+        "-c 'Command A','Command B' -c 'Command C'", Array, 'List of commands to run'
       ) do |n|
-        args.commands = n.map do |arg|
-          command_text, step = arg.split(';;')
-          Marathon::Command.new(command: command_text, step: step)
+        commands = n.map do |command_text|
+          Marathon::Command.new(command: command_text, step: @current_step)
         end
+
+        @current_step += 1
+        args.commands.concat(commands)
       end
     end
 
