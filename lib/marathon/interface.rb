@@ -34,7 +34,7 @@ module Marathon
     # @param step [Integer] Step to display in the banner
     #
     def render_step_result_header(step)
-      render_banner("Step #{step}")
+      puts string_with_padding("Step #{step}", 8).white.on_black
     end
 
     #

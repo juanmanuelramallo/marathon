@@ -9,9 +9,10 @@ RSpec.describe Marathon::Command do
   let(:command_text) { 'echo hola' }
   let(:options) do
     {
-      silent: true
+      verbose: verbose
     }
   end
+  let(:verbose) { true }
   let(:step) { nil }
 
   describe '#execute' do
@@ -31,18 +32,18 @@ RSpec.describe Marathon::Command do
       it { is_expected.to eq '' }
     end
 
-    context 'standard output' do
-      it 'does not print any message to stdout' do
-        expect { subject }.to_not output("> Done 'echo hola'\n").to_stdout
+    context 'option verbose' do
+      let(:expected_message) { "> Done '#{command_text}'\n" }
+
+      it 'prints a message to stdout' do
+        expect { subject }.to output(expected_message).to_stdout
       end
 
-      context 'without silent option' do
-        let(:options) do
-          {}
-        end
+      context 'with verbose option as false' do
+        let(:verbose) { false }
 
-        it 'prints the message of command has completed' do
-          expect { subject }.to output("> Done 'echo hola'\n").to_stdout
+        it 'doest not print the message of command has completed' do
+          expect { subject }.to_not output(expected_message).to_stdout
         end
       end
     end
@@ -78,13 +79,32 @@ RSpec.describe Marathon::Command do
     end
   end
 
-  # describe '#render_result' do
-  #   before { command.execute }
+  describe '#render_result' do
+    before do
+      command.execute
+      command.join
+    end
 
-  #   subject { command.render_result }
+    subject { command.render_result }
 
-  #   it 'displays the output in stdout' do
-  #     expect { subject }.to output("#{'echo hola'.white.on_black}\nhola\n").to_stdout
-  #   end
-  # end
+    it 'displays the status in stdout' do
+      expect { subject }.to output(/Ok/).to_stdout
+    end
+
+    context 'option verbose' do
+      let(:command_text) { 'test 1 = 1 && echo HOLA' }
+
+      it 'prints successful command output' do
+        expect { subject }.to output(/\nHOLA/).to_stdout
+      end
+
+      context 'verbose option as false' do
+        let(:verbose) { false }
+
+        it 'does not print output of the command' do
+          expect { subject }.to_not output(/\nHOLA/).to_stdout
+        end
+      end
+    end
+  end
 end

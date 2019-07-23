@@ -26,16 +26,20 @@ module Marathon
     # First step value to use in the step attribute
     FIRST_STEP = 1
 
+    # Hash of default options
+    DEFAULT_OPTIONS = {
+      verbose: false
+    }.freeze
+
     #
     # A new instance of command
     #
     # @param command [String] Command text to run in bash
     # @param step [Integer] Level or step where this command will be run
     # @param options [Hash] Options available are:
-    #   - "silent" (boolean) used to determine wether to print information about
-    #     the execution to stdout or not
+    #   - "verbose" (boolean) used to determine wether to print information after execution
     #
-    def initialize(command:, step: FIRST_STEP, options: {})
+    def initialize(command:, step: FIRST_STEP, options: DEFAULT_OPTIONS)
       @command = command
       @options = options
       @step = step ? step.to_i : FIRST_STEP
@@ -52,7 +56,7 @@ module Marathon
       @thread = Thread.new do
         @output = `#{command} 2>&1`
         @success = $CHILD_STATUS.success?
-        puts "> Done '#{command}'" unless options[:silent]
+        puts "> Done '#{command}'" if options[:verbose]
       end
     end
 
@@ -72,9 +76,8 @@ module Marathon
     #
     def render_result
       puts <<~STR
-        #{command.white.on_black}
-        #{status_text}
-        #{output}
+        #{status_text}#{" #{command}".white.on_black}
+        #{output if show_output?}
       STR
     end
 
@@ -87,13 +90,17 @@ module Marathon
 
     private
 
+    def show_output?
+      !success? || options[:verbose]
+    end
+
     def status_text
       if success?.nil?
-        '   Not run  '.black.on_light_white
+        ' Not run '.black.on_light_white
       elsif success?
-        '     Ok     '.black.on_green
+        '   Ok   '.black.on_green
       else
-        '   Failed   '.white.on_red
+        ' Failed '.white.on_red
       end
     end
   end
