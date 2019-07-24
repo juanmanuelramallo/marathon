@@ -26,13 +26,21 @@ RSpec.describe Marathon::Parser do
           expect(subject.commands.map(&:step).uniq.sort).to eq [1, 2]
         end
       end
+
+      context 'with verbose option' do
+        let(:options) { ['-c', 'test 1 = 1', '-v'] }
+
+        it 'returns true for the verbose option' do
+          expect(subject.verbose).to eq true
+        end
+      end
     end
 
     context 'with invalid arguments' do
       let(:options) { ['whatever'] }
 
-      it 'returns an empty options object' do
-        expect(subject.commands).to eq []
+      it 'exits the execution' do
+        expect { subject }.to raise_error SystemExit
       end
     end
 

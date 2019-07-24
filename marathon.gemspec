@@ -10,10 +10,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Juan Manuel Ramallo']
   spec.email         = ['ramallojuanm@gmail.com']
 
-  spec.summary       = 'Tests runner'
-  spec.description   = 'Test runner that receives a list of commands and runs\
-                        them concurrently and display a nice formatted view'
-  spec.homepage      = 'https://github.com/juanmanuelramallo'
+  spec.summary       = 'Shell commands runner'
+  spec.description   = 'Shell commands runner that receives a list of commands and runs\
+                        them grouped by steps'
+  spec.homepage      = 'https://github.com/juanmanuelramallo/marathon'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

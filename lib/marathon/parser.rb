@@ -17,8 +17,8 @@ module Marathon
   #     at the third step
   #
   class Parser
-    # Basic structure to store parsed commands
-    Options = Struct.new(:commands)
+    # Basic structure to store parsed commands and options
+    Options = Struct.new(:commands, :verbose)
 
     # Parsed arguments object
     attr_accessor :args
@@ -27,7 +27,7 @@ module Marathon
     # A new instance of the Parser
     #
     def initialize
-      @args = Options.new([])
+      @args = Options.new([], false)
       @current_step = Marathon::Command::FIRST_STEP
     end
 
@@ -39,6 +39,14 @@ module Marathon
     #
     def parse(options)
       opt_parser.parse!(options)
+
+      if args.commands.empty?
+        puts opt_parser
+        exit
+      end
+
+      parse_commands
+
       args
     end
 
@@ -46,14 +54,30 @@ module Marathon
 
     def commands_opts(opts)
       opts.on(
-        "-c 'Command A','Command B' -c 'Command C'", Array, 'List of commands to run'
+        "-c 'Command A','Command B' -c 'Command C'", Array, 'List of commands to run (required)'
       ) do |n|
         commands = n.map do |command_text|
-          Marathon::Command.new(command: command_text, step: @current_step)
+          { command: command_text, step: @current_step }
         end
 
         @current_step += 1
         args.commands.concat(commands)
+      end
+    end
+
+    def help_opts(opts)
+      opts.on('-h', '--help', 'Prints this help and the version information') do
+        puts "Marathon version: #{Marathon::VERSION}"
+        puts opts
+        exit
+      end
+    end
+
+    def parse_commands
+      args.commands = args.commands.map do |command|
+        Marathon::Command.new(
+          command: command[:command], step: command[:step], options: { verbose: args.verbose }
+        )
       end
     end
 
@@ -62,11 +86,14 @@ module Marathon
         opts.banner = 'Usage: marathon [options]'
 
         commands_opts(opts)
+        help_opts(opts)
+        verbose_opts(opts)
+      end
+    end
 
-        opts.on('-h', '--help', 'Prints this help') do
-          puts opts
-          exit
-        end
+    def verbose_opts(opts)
+      opts.on('-v', '--verbose', 'Prints more information on execution') do |_n|
+        args.verbose = true
       end
     end
   end

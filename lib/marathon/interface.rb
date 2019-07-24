@@ -6,20 +6,6 @@ module Marathon
   #
   class Interface
     #
-    # Renders a banner to stdout
-    #
-    # @param str [String] String to send to stdout
-    # @param padding [Integer] Amount of empty spaces to use in the left and right side
-    #
-    def render_banner(str, padding = 3)
-      empty = empty_spaces(str.size + padding * 2).on_black
-
-      puts empty
-      puts string_with_padding(str, padding).white.on_black
-      puts empty
-    end
-
-    #
     # Renders a header banner for the execution of a step
     #
     # @param step [Integer] Step to display in the banner
@@ -34,7 +20,7 @@ module Marathon
     # @param step [Integer] Step to display in the banner
     #
     def render_step_result_header(step)
-      render_banner("Step #{step}")
+      puts string_with_padding("Step #{step}", 8).white.on_black
     end
 
     #
