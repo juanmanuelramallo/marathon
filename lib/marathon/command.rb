@@ -13,8 +13,6 @@ module Marathon
   class Command
     # Output of command
     attr_accessor :output
-    # Thread object
-    attr_accessor :thread
 
     # Command text to run in bash
     attr_reader :command
@@ -53,32 +51,10 @@ module Marathon
     # @return [Thread] Thread of command execution
     #
     def execute
-      @thread = Thread.new do
-        @output = `#{command} 2>&1`
-        @success = $CHILD_STATUS.success?
-        puts "> Done '#{command}'" if options[:verbose]
-      end
-    end
-
-    #
-    # Passes join message to thread
-    #
-    # @return [Thread] Thread of command execution
-    #
-    def join
-      thread.join
-    end
-
-    #
-    # Present a well formatted output result to stdout
-    #
-    # @return [nil]
-    #
-    def render_result
-      puts <<~STR
-        #{status_text}#{" #{command}".white.on_black}
-        #{output if show_output?}
-      STR
+      @output = `#{command} 2>&1`
+      @success = $CHILD_STATUS.success?
+      puts "> Done '#{command}'" if options[:verbose]
+      execution_result
     end
 
     #
@@ -89,6 +65,20 @@ module Marathon
     end
 
     private
+
+    def execution_result
+      {
+        result_string: result_string,
+        success: success?
+      }
+    end
+
+    def result_string
+      <<~STR
+        #{status_text}#{" #{command}".white.on_black}
+        #{output if show_output?}
+      STR
+    end
 
     def show_output?
       !success? || options[:verbose]

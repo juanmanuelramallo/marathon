@@ -18,7 +18,6 @@ RSpec.describe Marathon::Command do
   describe '#execute' do
     subject do
       command.execute
-      command.join
       command.output
     end
 
@@ -47,22 +46,18 @@ RSpec.describe Marathon::Command do
         end
       end
     end
+
+    context 'execution result' do
+      subject { command.execute }
+
+      it 'returns a hash' do
+        expect(subject).to be_kind_of Hash
+      end
+    end
   end
 
-  # describe '#join' do
-  #   subject { command.join }
-
-  #   it 'sends join to the thread object' do
-  #     allow(command.thread).to receive(:join).and_return(true)
-  #     expect(subject).to eq true
-  #   end
-  # end
-
   describe '#success?' do
-    before do
-      command.execute
-      command.join
-    end
+    before { command.execute }
 
     subject { command.success? }
 
@@ -76,35 +71,6 @@ RSpec.describe Marathon::Command do
       let(:command_text) { 'test 1 = 2' }
 
       it { is_expected.to eq false }
-    end
-  end
-
-  describe '#render_result' do
-    before do
-      command.execute
-      command.join
-    end
-
-    subject { command.render_result }
-
-    it 'displays the status in stdout' do
-      expect { subject }.to output(/Ok/).to_stdout
-    end
-
-    context 'option verbose' do
-      let(:command_text) { 'test 1 = 1 && echo HOLA' }
-
-      it 'prints successful command output' do
-        expect { subject }.to output(/\nHOLA/).to_stdout
-      end
-
-      context 'verbose option as false' do
-        let(:verbose) { false }
-
-        it 'does not print output of the command' do
-          expect { subject }.to_not output(/\nHOLA/).to_stdout
-        end
-      end
     end
   end
 end

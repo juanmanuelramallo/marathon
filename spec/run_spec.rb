@@ -3,7 +3,8 @@
 RSpec.describe Marathon::Run do
   let(:commands) { [Marathon::Command.new(command: 'echo hola')] }
   let(:interface) { Marathon::Interface.new }
-  let(:run) { Marathon::Run.new(commands, interface) }
+  let(:processes) { 0 }
+  let(:run) { Marathon::Run.new(commands: commands, interface: interface, processes: processes) }
 
   describe '#run' do
     subject { run.run }
