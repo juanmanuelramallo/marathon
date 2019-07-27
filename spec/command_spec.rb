@@ -50,8 +50,8 @@ RSpec.describe Marathon::Command do
     context 'execution result' do
       subject { command.execute }
 
-      it 'returns a hash' do
-        expect(subject).to be_kind_of Hash
+      it 'returns an execution result object' do
+        expect(subject).to be_kind_of Marathon::Command::ExecutionResult
       end
     end
   end

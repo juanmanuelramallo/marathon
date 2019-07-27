@@ -33,6 +33,10 @@ RSpec.describe Marathon::Run do
       it 'does not run the third command' do
         expect { subject }.to_not change { commands[2].success? }
       end
+
+      it 'renders a not ran message' do
+        expect { subject }.to output(/Not ran/).to_stdout
+      end
     end
   end
 end

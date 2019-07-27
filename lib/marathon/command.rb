@@ -21,6 +21,9 @@ module Marathon
     # Level or step where this command will be run
     attr_reader :step
 
+    # Execution result object
+    ExecutionResult = Struct.new(:result_string, :success)
+
     # First step value to use in the step attribute
     FIRST_STEP = 1
 
@@ -54,7 +57,20 @@ module Marathon
       @output = `#{command} 2>&1`
       @success = $CHILD_STATUS.success?
       puts "> Done '#{command}'" if options[:verbose]
-      execution_result
+      ExecutionResult.new(result_string, success?)
+    end
+
+    #
+    # Returns a well formatted string to be rendered in stdout displaying info about the status
+    # and the output
+    #
+    # @return [String] String to be printed in stdout
+    #
+    def result_string
+      <<~STR
+        #{status_text}#{" #{command}".white.on_black}
+        #{output if show_output?}
+      STR
     end
 
     #
@@ -66,27 +82,13 @@ module Marathon
 
     private
 
-    def execution_result
-      {
-        result_string: result_string,
-        success: success?
-      }
-    end
-
-    def result_string
-      <<~STR
-        #{status_text}#{" #{command}".white.on_black}
-        #{output if show_output?}
-      STR
-    end
-
     def show_output?
       !success? || options[:verbose]
     end
 
     def status_text
       if success?.nil?
-        ' Not run '.black.on_light_white
+        ' Not ran '.black.on_light_white
       elsif success?
         '   Ok   '.black.on_green
       else

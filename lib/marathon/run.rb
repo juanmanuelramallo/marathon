@@ -56,10 +56,11 @@ module Marathon
     def render_result
       interface.render_spacer
 
-      results.each do |step, results|
+      commands.each do |step, commands_list|
         interface.render_step_result_header(step)
-        results.each do |result|
-          puts result[:result_string]
+
+        (results[step] || commands_list).each do |command|
+          puts command.result_string
         end
       end
     end
