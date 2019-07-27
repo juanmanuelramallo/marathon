@@ -41,6 +41,21 @@ marathon -c 'yarn run js-lint','yarn run css-lint' -c 'bundle exec rubocop' -c '
 
 Order matters!
 
+### Options
+
+- Commands: `-c` List of commands of one step. You should enclose your commands with a single apostrophe and separate them using commas. If you want to specify a different step just write this option again.
+```bash
+marathon -c 'a command in step 1','other command in step 1','you get the idea' -c 'a command in step 2'
+```
+- Processes: `-p` `--processes` Number of processes to use to run the commands in every step. Only one process (main) by default.
+```bash
+marathon -c 'sleep 1','sleep 1' -p 2
+```
+- Verbose: `-v` `--verbose` As you may already guess, it prints more information on execution. Prints a message after the command has ended. And no matter the if the command was successful or not, the output is always displayed on stdout.
+```bash
+marathon -c 'echo Hola' -v
+```
+
 ![Failed example image](https://i.imgur.com/jL9oGih.png)
 
 ## Development
