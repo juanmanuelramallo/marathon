@@ -3,7 +3,7 @@ PATH
   specs:
     marathon (0.1.0)
       colorize
-      parallel
+      parallel (~> 1.17.0)
 
 GEM
   remote: https://rubygems.org/
