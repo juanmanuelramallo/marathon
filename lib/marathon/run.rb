@@ -1,26 +1,35 @@
 # frozen_string_literal: true
 
 require 'colorize'
+require 'parallel'
 
 module Marathon
   #
   # Entry object to call in order to run a set of commands
   #
   class Run
+    # Hash of results of commands
+    attr_accessor :results
+
     # Array of commands objects
     attr_reader :commands
     # An instance of the interface object
     attr_reader :interface
+    # Amount of processes to use in parallel execution
+    attr_reader :processes
 
     #
     # A new instance of run
     #
     # @param commands [Array<Marathon::Command>] Array of commands to run
     # @param interface [Marathon::Interface] An instance of the interface object
+    # @param processes [Integer] Amount of processes to use in parallel execution
     #
-    def initialize(commands, interface)
+    def initialize(commands:, interface:, processes:)
       @commands = commands.group_by(&:step).sort.to_h
       @interface = interface
+      @processes = processes
+      @results = {}
     end
 
     #
@@ -32,10 +41,11 @@ module Marathon
       commands.each do |step, commands_list|
         interface.render_step_execution_header(step)
 
-        commands_list.each(&:execute)
-        commands_list.each(&:join)
+        step_results = Parallel.map(commands_list, in_processes: processes, &:execute)
 
-        break unless commands_list.all?(&:success?)
+        results[step] = step_results
+
+        break unless step_results.all? { |result| result[:success] }
       end
 
       render_result
@@ -48,7 +58,10 @@ module Marathon
 
       commands.each do |step, commands_list|
         interface.render_step_result_header(step)
-        commands_list.each(&:render_result)
+
+        (results[step] || commands_list).each do |command|
+          puts command.result_string
+        end
       end
     end
   end

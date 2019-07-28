@@ -13,8 +13,6 @@ module Marathon
   class Command
     # Output of command
     attr_accessor :output
-    # Thread object
-    attr_accessor :thread
 
     # Command text to run in bash
     attr_reader :command
@@ -22,6 +20,9 @@ module Marathon
     attr_reader :options
     # Level or step where this command will be run
     attr_reader :step
+
+    # Execution result object
+    ExecutionResult = Struct.new(:result_string, :success)
 
     # First step value to use in the step attribute
     FIRST_STEP = 1
@@ -53,29 +54,20 @@ module Marathon
     # @return [Thread] Thread of command execution
     #
     def execute
-      @thread = Thread.new do
-        @output = `#{command} 2>&1`
-        @success = $CHILD_STATUS.success?
-        puts "> Done '#{command}'" if options[:verbose]
-      end
+      @output = `#{command} 2>&1`
+      @success = $CHILD_STATUS.success?
+      puts "> Done '#{command}'" if options[:verbose]
+      ExecutionResult.new(result_string, success?)
     end
 
     #
-    # Passes join message to thread
+    # Returns a well formatted string to be rendered in stdout displaying info about the status
+    # and the output
     #
-    # @return [Thread] Thread of command execution
+    # @return [String] String to be printed in stdout
     #
-    def join
-      thread.join
-    end
-
-    #
-    # Present a well formatted output result to stdout
-    #
-    # @return [nil]
-    #
-    def render_result
-      puts <<~STR
+    def result_string
+      <<~STR
         #{status_text}#{" #{command}".white.on_black}
         #{output if show_output?}
       STR
@@ -96,7 +88,7 @@ module Marathon
 
     def status_text
       if success?.nil?
-        ' Not run '.black.on_light_white
+        ' Not ran '.black.on_light_white
       elsif success?
         '   Ok   '.black.on_green
       else

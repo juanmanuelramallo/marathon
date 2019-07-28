@@ -34,6 +34,20 @@ RSpec.describe Marathon::Parser do
           expect(subject.verbose).to eq true
         end
       end
+
+      context 'parallel option' do
+        it 'returns one by default' do
+          expect(subject.processes).to eq 0
+        end
+
+        context 'passing 2 as argument' do
+          let(:options) { ['-c', 'test 1 = 1', '-p', '2'] }
+
+          it 'returns the amount of processes to use' do
+            expect(subject.processes).to eq 2
+          end
+        end
+      end
     end
 
     context 'with invalid arguments' do

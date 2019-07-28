@@ -3,7 +3,8 @@
 RSpec.describe Marathon::Run do
   let(:commands) { [Marathon::Command.new(command: 'echo hola')] }
   let(:interface) { Marathon::Interface.new }
-  let(:run) { Marathon::Run.new(commands, interface) }
+  let(:processes) { 0 }
+  let(:run) { Marathon::Run.new(commands: commands, interface: interface, processes: processes) }
 
   describe '#run' do
     subject { run.run }
@@ -31,6 +32,10 @@ RSpec.describe Marathon::Run do
 
       it 'does not run the third command' do
         expect { subject }.to_not change { commands[2].success? }
+      end
+
+      it 'renders a not ran message' do
+        expect { subject }.to output(/Not ran/).to_stdout
       end
     end
   end

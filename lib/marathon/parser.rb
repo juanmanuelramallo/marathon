@@ -18,7 +18,7 @@ module Marathon
   #
   class Parser
     # Basic structure to store parsed commands and options
-    Options = Struct.new(:commands, :verbose)
+    Options = Struct.new(:commands, :processes, :verbose)
 
     # Parsed arguments object
     attr_accessor :args
@@ -27,7 +27,7 @@ module Marathon
     # A new instance of the Parser
     #
     def initialize
-      @args = Options.new([], false)
+      @args = Options.new([], 0, false)
       @current_step = Marathon::Command::FIRST_STEP
     end
 
@@ -73,6 +73,13 @@ module Marathon
       end
     end
 
+    def parallel_opts(opts)
+      opts.on('-p', '--parallel PROCESSES',
+              'Executes the commands in parallel. Pass the amount of processes to use.') do |n|
+        args.processes = n.to_i
+      end
+    end
+
     def parse_commands
       args.commands = args.commands.map do |command|
         Marathon::Command.new(
@@ -86,6 +93,7 @@ module Marathon
         opts.banner = 'Usage: marathon [options]'
 
         commands_opts(opts)
+        parallel_opts(opts)
         help_opts(opts)
         verbose_opts(opts)
       end
